@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #global {
+            width: 500px;
+        }
+        .err-msg {
+            display: none;
+            color: red;
+        }
+        .step {
+            display:none;
+        }
+        .active {
+            display: block;
+        }
+        .has-error > .err-msg {
+            display: block;
+        }
+        #progress-bar-wrap {
+            background-color: lightgray;
+            width: 100%;
+            border-radius: 20px;
+        }
+        #progress-bar {
+            border-radius: 20px;
+            width: 33%;
+            height: 5px;
+            background-color: lightsalmon;
+        }
+    </style>
+</head>
+<body>
+    <div id="global">
+        <div style="display:flex; align-items: center; gap:10px">
+            <div id="progress-bar-wrap">
+                <div id="progress-bar">
+                </div>
+            </div>
+            <span id="progress-pct">25%</span>
+        </div>
+        <form id="my_form">
+        <div class="active step" id="step_1">
+            <label>FirstName</label>
+            <input type="text" id="firstName" name="firstName">
+            <button onclick="goStep(2,'firstName')" class="next" type="button">Next</button>
+            <div class="err-msg">requested field</div>
+        </div>
+        <div class="step" id="step_2">
+            <label>lastName</label>
+            <input type="text" id="lastName" name="lastName">
+            <button onclick="goStep(1)" class="previous" type="button">Previous</button>
+            <button onclick="goStep(3,'lastName')" class="next" type="button">Next</button>
+            <div class="err-msg">requested field</div>
+        </div>
+        <div class="step" id="step_3">
+            <label>Cities</label>
+            <select id="cities" name="cities">
+                <option value="Paris">Paris</option>
+                <option value="Lyon">Lyon</option>
+                <option value="Marseille">marseille</option>
+            </select>
+            <button onclick="goStep(2)" class="previous" type="button">Previous</button>
+            <button onclick="goStep(4,'cities')" class="next" type="button">Next</button>
+        </div>
+        <div class="step" id="step_4">
+            <label>Age</label>
+            <input type="number" id="age" name="age">
+            <button onclick="goStep(3)" class="previous" type="button">Previous</button>
+            <button id="submit" type="button">Submit</button>
+            <div class="err-msg">requested field</div>
+        </div>
+        </form>
+    </div>
+    <script>
+        
+        function goStep(stepNumber, inputId) {
+            let percentageStep = Math.round(stepNumber / 4 * 100) + "%"
+            progress_bar = document.getElementById("progress-bar")
+
+            if (inputId) {
+                console.log(inputId)
+                const input = document.getElementById(inputId)
+                const currentStep = input.closest(".step")
+                const value = input.value
+                console.log(currentStep)
+
+                if(value == "") {
+                    currentStep.classList.add("has-error")
+                    return
+                }
+            }
+            
+            document.querySelectorAll(".step").forEach(step => {
+                step.classList.remove("active")
+            })
+
+            document.getElementById("step_"+stepNumber).classList.add("active")
+            progress_bar.style.width = percentageStep
+            document.getElementById("progress-pct").textContent = percentageStep
+            
+        }
+        document.getElementById("submit").addEventListener('click', submit);
+        function submit() {
+            form = document.getElementById("my_form")
+            data = Object.fromEntries(new FormData(form))
+            console.log(data)
+        }
+    </script>
+
+    
+</body>
+</html>
