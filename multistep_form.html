@@ -5,8 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         #global {
             width: 500px;
+            border: 2px solid black;
+            padding: 40px;
         }
         .err-msg {
             display: none;
@@ -32,49 +37,96 @@
             height: 5px;
             background-color: lightsalmon;
         }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 10px;
+            border: 1px solid lightgray
+        }
+        .action {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .btn {
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid lightgray;
+        }
+        .btn-next {
+            flex: 1;
+            background-color: lightsalmon;
+            color: white;
+        }
+        .btn-back {
+            width: 40%;
+            background-color: white;
+            color: black;
+        }
+        label {
+            text-align: center;
+            display: block;
+        }
     </style>
 </head>
 <body>
     <div id="global">
-        <div style="display:flex; align-items: center; gap:10px">
-            <div id="progress-bar-wrap">
-                <div id="progress-bar">
+        <div id="formHeader">
+            <div style="display:flex; align-items: center; gap:10px">
+                <div id="progress-bar-wrap">
+                    <div id="progress-bar">
+                    </div>
+                </div>
+                <span id="progress-pct">25%</span>
+            </div>
+        </div>
+        <div id="formBody">
+            <form id="my_form">
+            <div class="active step" id="step_1">
+                <label>What is your firstname ?</label>
+                <input type="text" id="firstName" name="firstName" placeholder="firstname"><br>
+                <div class="err-msg">requested field</div>
+                <div class="action">
+                    <button onclick="goStep(2,'firstName')" class="btn btn-next" type="button">Next</button>
                 </div>
             </div>
-            <span id="progress-pct">25%</span>
+            <div class="step" id="step_2">
+                <label>What is your lastname ?</label>
+                <input type="text" id="lastName" name="lastName" placeholder="lastname"><br>
+                <div class="err-msg">requested field</div>
+                <div class="action">
+                    <button onclick="goStep(1)" class="btn btn-back" type="button">Previous</button>
+                    <button onclick="goStep(3,'lastName')" class="btn btn-next" type="button">Next</button>
+                </div>
+
+            </div>
+            <div class="step" id="step_3">
+                <label>Where do you live ?</label>
+                <select id="cities" name="cities" >
+                    <option value disabled selected>Sélectionnez une ville</option>
+                    <option value="Paris">Paris</option>
+                    <option value="Lyon">Lyon</option>
+                    <option value="Marseille">marseille</option>
+                </select><br>
+                <div class="err-msg">requested field</div>
+                <div class="action">
+                    <button onclick="goStep(2)" class="btn btn-back" type="button">Previous</button>
+                    <button onclick="goStep(4,'cities')" class="btn btn-next" type="button">Next</button>
+                </div>
+            </div>
+            <div class="step" id="step_4">
+                <label>How old are you ?</label>
+                <input type="number" id="age" name="age"><br>
+                <div class="err-msg">requested field</div>
+                <div class="action">
+                    <button onclick="goStep(3)" class="btn btn-back" type="button">Previous</button>
+                    <button class="btn btn-next" id="submit" type="button">Submit</button>
+                </div>
+
+            </div>
+            </form>
         </div>
-        <form id="my_form">
-        <div class="active step" id="step_1">
-            <label>FirstName</label>
-            <input type="text" id="firstName" name="firstName">
-            <button onclick="goStep(2,'firstName')" class="next" type="button">Next</button>
-            <div class="err-msg">requested field</div>
-        </div>
-        <div class="step" id="step_2">
-            <label>lastName</label>
-            <input type="text" id="lastName" name="lastName">
-            <button onclick="goStep(1)" class="previous" type="button">Previous</button>
-            <button onclick="goStep(3,'lastName')" class="next" type="button">Next</button>
-            <div class="err-msg">requested field</div>
-        </div>
-        <div class="step" id="step_3">
-            <label>Cities</label>
-            <select id="cities" name="cities">
-                <option value="Paris">Paris</option>
-                <option value="Lyon">Lyon</option>
-                <option value="Marseille">marseille</option>
-            </select>
-            <button onclick="goStep(2)" class="previous" type="button">Previous</button>
-            <button onclick="goStep(4,'cities')" class="next" type="button">Next</button>
-        </div>
-        <div class="step" id="step_4">
-            <label>Age</label>
-            <input type="number" id="age" name="age">
-            <button onclick="goStep(3)" class="previous" type="button">Previous</button>
-            <button id="submit" type="button">Submit</button>
-            <div class="err-msg">requested field</div>
-        </div>
-        </form>
     </div>
     <script>
         
